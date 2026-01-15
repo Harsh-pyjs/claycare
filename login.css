@@ -157,3 +157,7 @@ body {
 #logoutBtn:hover {
   background: #c9302c;
 }
+
+#roleBadge {
+  display: none; /* hide when logged out */
+}

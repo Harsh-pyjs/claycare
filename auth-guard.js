@@ -32,13 +32,14 @@ const userBox = document.getElementById("userBox");
 const userIcon = document.getElementById("userIcon");
 const logoutBtn = document.getElementById("logoutBtn");
 const warning = document.getElementById("loginWarning");
+const roleBadge = document.getElementById("roleBadge");
 
 /* Auth guard */
 onAuthStateChanged(auth, (user) => {
   const page = window.location.pathname.split("/").pop();
 
+  // 🔒 Protect pages
   if (!user && !publicPages.includes(page)) {
-    // 🔒 Block all protected pages
     window.location.replace("login.html");
     return;
   }
@@ -48,12 +49,29 @@ onAuthStateChanged(auth, (user) => {
     loginBtn && (loginBtn.style.display = "none");
     userBox && (userBox.style.display = "inline-block");
     warning && warning.classList.remove("show");
+
+    if (roleBadge) {
+      roleBadge.style.display = "block";
+
+      if (user.email === "mukesh.79.nbh.coomay@gmail.com") {
+        roleBadge.textContent = "ADMIN";
+        roleBadge.classList.add("admin");
+      } else {
+        roleBadge.textContent = "USER";
+        roleBadge.classList.remove("admin");
+      }
+    }
+
   } else {
     // Logged out UI
     loginBtn && (loginBtn.style.display = "inline-block");
     userBox && (userBox.style.display = "none");
     logoutBtn && (logoutBtn.style.display = "none");
     warning && warning.classList.add("show");
+
+    if (roleBadge) {
+      roleBadge.style.display = "none"; // ✅ shows NOTHING when logged out
+    }
   }
 });
 
