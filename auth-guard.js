@@ -53,7 +53,9 @@ onAuthStateChanged(auth, (user) => {
     if (roleBadge) {
       roleBadge.style.display = "block";
 
-      if (user.email === "mukesh.79.nbh.coomay@gmail.com") {
+const adminEmail = "mukesh.79.nbh.coomay@gmail.com";
+
+if (user.email?.toLowerCase().trim() === adminEmail) {
         roleBadge.textContent = "ADMIN";
         roleBadge.classList.add("admin");
       } else {
@@ -87,3 +89,4 @@ userIcon?.addEventListener("click", () => {
   logoutBtn.style.display =
     logoutBtn.style.display === "block" ? "none" : "block";
 });
+
