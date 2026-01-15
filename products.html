@@ -75,5 +75,35 @@
   <p>© 2025 ClayCare. All Rights Reserved.</p>
 </footer>
 
+<!-- Login Is Necessary-->
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXfJgQ8P7D-sOuu2DNeA3O5mIEhw2i1xs",
+    authDomain: "claycare-bfb6b.firebaseapp.com",
+    projectId: "claycare-bfb6b",
+    storageBucket: "claycare-bfb6b.firebasestorage.app",
+    messagingSenderId: "160759835778",
+    appId: "1:160759835778:web:49231b58d003a4e807989b"
+  };
+
+  // Init Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Auth Guard
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // Not logged in → redirect to login
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+<script type="module" src="auth-guard.js"></script>
+
 </body>
 </html>

@@ -8,6 +8,10 @@
 </head>
 <body>
 
+  <div id="loginWarning">
+  You are required to login to unlock all ClayCare features
+</div>
+
 <header class="header">
   <!-- Logo Image -->
   <div class="logo">
@@ -17,7 +21,7 @@
   <!-- Navigation -->
   <nav class="nav">
 <a class="active" href="https://claycare.vercel.app/">About</a>
-    <a href="https://claycare.vercel.app/products.html">Products</a>
+    <a href="https://claycare.vercel.app/product.html">Products</a>
     <a href="https://claycare.vercel.app/support.html">Support</a>
   </nav>
 
@@ -97,7 +101,7 @@
     appId: "1:160759835778:web:49231b58d003a4e807989b"
   };
 
-  // Init Firebase
+  // Init Firebase ONCE
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
@@ -106,33 +110,49 @@
   const userBox = document.getElementById("userBox");
   const userIcon = document.getElementById("userIcon");
   const logoutBtn = document.getElementById("logoutBtn");
+  const warning = document.getElementById("loginWarning");
 
-  // Auth state listener
+  // Pages that REQUIRE login
+  const protectedPages = [
+    "product.html",
+    "support.html",
+    "cart.html"
+  ];
+
   onAuthStateChanged(auth, (user) => {
+    const currentPage = window.location.pathname.split("/").pop();
+
     if (user) {
+      // Logged in
       loginBtn.style.display = "none";
       userBox.style.display = "inline-block";
+      warning.classList.remove("show");
     } else {
+      // NOT logged in
       loginBtn.style.display = "inline-block";
       userBox.style.display = "none";
       logoutBtn.style.display = "none";
+      warning.classList.add("show");
+
+      // Block protected pages
+      if (protectedPages.includes(currentPage)) {
+        window.location.replace("login.html");
+      }
     }
   });
 
   // Toggle logout button
-  userIcon.addEventListener("click", () => {
+  userIcon?.addEventListener("click", () => {
     logoutBtn.style.display =
       logoutBtn.style.display === "block" ? "none" : "block";
   });
 
   // Logout
-  logoutBtn.addEventListener("click", async () => {
+  logoutBtn?.addEventListener("click", async () => {
     await signOut(auth);
-    logoutBtn.style.display = "none";
-    window.location.href = "index.html";
+    window.location.replace("index.html");
   });
 </script>
 
 </body>
 </html>
-
